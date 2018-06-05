@@ -1,6 +1,7 @@
 package com.aembot.game.Screens;
 
 import com.aembot.game.AembotPlatformer;
+import com.aembot.game.Bodies.AEMBOT;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -15,13 +16,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PlayScreen implements Screen {
 
+    public static World world;
+
     private AembotPlatformer game;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private HUD hud;
-    private World world;
+
     private Box2DDebugRenderer b2dr;
+    private AEMBOT aembot;
 
 
     public PlayScreen(AembotPlatformer game) {
@@ -37,6 +41,9 @@ public class PlayScreen implements Screen {
 
         b2dr = new Box2DDebugRenderer();
 
+        aembot = new AEMBOT();
+
+
     }
 
     @Override
@@ -48,6 +55,7 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         b2dr.render(world,gamecam.combined);
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
