@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AembotPlatformer extends Game {
 	public SpriteBatch batch;
+	public static final int V_WIDTH = 268;
+	public static final int V_HEIGHT = 200;
 	
 	@Override
 	public void create () {
