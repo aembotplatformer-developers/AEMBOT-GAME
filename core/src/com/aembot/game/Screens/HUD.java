@@ -1,5 +1,6 @@
 package com.aembot.game.Screens;
 
+import com.aembot.game.AembotPlatformer;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,9 +13,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.awt.*;
 import java.awt.Label;
 
-/**
- * Created by mikeo on 6/1/2018.
- */
 public class HUD {
     private Viewport viewport;
     public Stage stage;
@@ -25,7 +23,7 @@ public class HUD {
 
     public HUD(SpriteBatch HudBatch, int score, int level, int ammo, PlayScreen screen){
 
-    viewport = new FitViewport(screen.getWidth(),screen.getHeight(),screen.getCam());
+    viewport = new FitViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT,new OrthographicCamera());
     stage = new Stage(viewport,HudBatch);
 
     levelL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%02d",level)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -36,14 +34,15 @@ public class HUD {
     ammoTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Ammo")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
     Table table = new Table();
-    table.setY(150);
+    table.setY(175);
+    table.setX(AembotPlatformer.V_WIDTH/2);
     table.add(levelTitle).pad(10);
     table.add(scoreTitle).pad(10);
     table.add(ammoTitle).pad(10);
     table.row();
-    table.add(levelL).pad(10);
-    table.add(scoreL).pad(10);
-    table.add(ammoL).pad(10);
+    table.add(levelL).padTop(10);
+    table.add(scoreL).padTop(10);
+    table.add(ammoL).padTop(10);
 
     stage.addActor(table);
     }
