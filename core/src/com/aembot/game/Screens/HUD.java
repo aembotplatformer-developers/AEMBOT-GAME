@@ -34,12 +34,12 @@ public class HUD {
     ammoTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Ammo")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
     Table table = new Table();
-<<<<<<< HEAD
+
     table.setY(viewport.getScreenY() - 50);
-=======
+
     table.setY(175);
     table.setX(AembotPlatformer.V_WIDTH/2);
->>>>>>> origin/master
+
     table.add(levelTitle).pad(10);
     table.add(scoreTitle).pad(10);
     table.add(ammoTitle).pad(10);

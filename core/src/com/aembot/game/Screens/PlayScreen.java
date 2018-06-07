@@ -10,10 +10,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PlayScreen implements Screen {
+
+    public static final float PPM = 100;
+
+    public static World world;
+
 
     private AembotPlatformer game;
     Texture texture;
@@ -24,6 +31,8 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+
+
 
     public PlayScreen(AembotPlatformer game) {
         this.game = game;
@@ -36,6 +45,9 @@ public class PlayScreen implements Screen {
         map = mapLoader.load("Strongholdmap1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
+
+        world = new World(new Vector2(0,10),true);
+
     }
 
     @Override
