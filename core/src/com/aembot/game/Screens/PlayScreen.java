@@ -1,6 +1,7 @@
 package com.aembot.game.Screens;
 
 import com.aembot.game.AembotPlatformer;
+import com.aembot.game.Characters.AEMBOT;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -31,10 +32,11 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private HUD hud;
+    private AEMBOT aembot;
 
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
+    public static TmxMapLoader mapLoader = new TmxMapLoader();;
+    public static  TiledMap map = mapLoader.load("core/assets/Strongholdmap1.tmx");;
+    public static OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(map);;
 
     public PlayScreen(AembotPlatformer game) {
         this.game = game;
@@ -42,10 +44,7 @@ public class PlayScreen implements Screen {
         gamecam = new OrthographicCamera();
         gamePort = new StretchViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT, gamecam);
         hud = new HUD(game.batch,0,0,0,this);
-
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load("Strongholdmap1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 
         world = new World(new Vector2(0,10),true);
@@ -72,6 +71,8 @@ public class PlayScreen implements Screen {
         }
 
 
+        aembot = new AEMBOT();
+
     }
 
     @Override
@@ -80,12 +81,16 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt){ //Temporary
-        if(Gdx.input.isTouched())
-            gamecam.position.x+=100*dt;
+        if(Gdx.input.isTouched()) {
+            gamecam.position.x += 100 * dt;
+        }
+
+
     }
 
     public void update(float dt) {
         handleInput(dt);
+        world.step(1/60f,5,2);
         gamecam.update();
         renderer.setView(gamecam);
     }
@@ -141,4 +146,6 @@ public class PlayScreen implements Screen {
     public int getWidth(){return gamePort.getScreenWidth();}
 
     public Camera getCam(){return gamecam;}
+
+    public TiledMap getMap(){return map;}
 }

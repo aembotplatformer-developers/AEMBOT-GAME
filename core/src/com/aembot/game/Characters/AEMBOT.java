@@ -1,8 +1,8 @@
-package com.aembot.game.Bodies;
+package com.aembot.game.Characters;
 
 import com.aembot.game.Screens.PlayScreen;
-import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -14,23 +14,30 @@ public class AEMBOT extends Sprite {
     private BodyDef bodyDef;
     private FixtureDef fixtureDef;
 
+    private float playerX, playerY;
+
+
     public AEMBOT(){
+
+
+
         world = PlayScreen.world;
 
         bodyDef = new BodyDef();
-        bodyDef.position.set(50,50);
+        bodyDef.position.set(32,32);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = world.createBody(bodyDef);
 
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(10,10);
 
         fixtureDef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(10);
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
 
 
     }
+
 
 }
