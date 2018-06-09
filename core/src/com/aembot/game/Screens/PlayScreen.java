@@ -3,6 +3,7 @@ package com.aembot.game.Screens;
 import com.aembot.game.AembotPlatformer;
 import com.aembot.game.Characters.AEMBOT;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -40,14 +41,14 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(AembotPlatformer game) {
         this.game = game;
-     //   texture = new Texture("badlogic.jpg");
+
         gamecam = new OrthographicCamera();
         gamePort = new StretchViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT, gamecam);
         hud = new HUD(game.batch,0,0,0,this);
         
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 
-        world = new World(new Vector2(0,10),true);
+        world = new World(new Vector2(0,-25),true);
         b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
@@ -80,10 +81,13 @@ public class PlayScreen implements Screen {
 
     }
 
-    public void handleInput(float dt){ //Temporary
-        if(Gdx.input.isTouched()) {
-            gamecam.position.x += 100 * dt;
-        }
+    public void handleInput(float dt){
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && aembot.body.getLinearVelocity().y == 0) aembot.moveY();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)  ) aembot.moveXLeft();;
+
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) ) aembot.moveXRight();;
 
 
     }
@@ -93,6 +97,8 @@ public class PlayScreen implements Screen {
         world.step(1/60f,5,2);
         gamecam.update();
         renderer.setView(gamecam);
+
+        gamecam.position.x = aembot.body.getPosition().x + 98;
     }
 
     @Override
@@ -108,9 +114,6 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        //game.batch.begin();
-      //  game.batch.draw(texture, 0, 0);
-        //game.batch.end();
 
 
 
