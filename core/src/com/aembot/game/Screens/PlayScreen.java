@@ -24,6 +24,9 @@ import org.w3c.dom.css.Rect;
 public class PlayScreen implements Screen {
 
     public static final float PPM = 100;
+    public static int score = 0;
+    public static int level = 01;
+    public static int ammo = 0;
 
     public static World world;
     private Box2DDebugRenderer b2dr;
@@ -44,7 +47,7 @@ public class PlayScreen implements Screen {
 
         gamecam = new OrthographicCamera();
         gamePort = new StretchViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT, gamecam);
-        hud = new HUD(game.batch,0,0,0,this);
+        hud = new HUD(game.batch,score,level,ammo,this);
         
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 
@@ -97,7 +100,8 @@ public class PlayScreen implements Screen {
         world.step(1/60f,5,2);
         gamecam.update();
         renderer.setView(gamecam);
-
+        score = (int) (aembot.body.getPosition().x - 32) / 10;
+        hud.update(score);
         gamecam.position.x = aembot.body.getPosition().x + 98;
     }
 
