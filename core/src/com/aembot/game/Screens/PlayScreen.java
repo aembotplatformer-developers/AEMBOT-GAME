@@ -23,8 +23,6 @@ import org.w3c.dom.css.Rect;
 
 public class PlayScreen implements Screen {
 
-    public static final float PPM = 100;
-
     public static World world;
     private Box2DDebugRenderer b2dr;
 
@@ -36,19 +34,19 @@ public class PlayScreen implements Screen {
     private AEMBOT aembot;
 
     public static TmxMapLoader mapLoader = new TmxMapLoader();;
-    public static  TiledMap map = mapLoader.load("core/assets/Strongholdmap1.tmx");;
-    public static OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(map);;
+    public static  TiledMap map = mapLoader.load("Strongholdmap1.tmx");
+    public static OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(map, 1/AembotPlatformer.PPM);
 
     public PlayScreen(AembotPlatformer game) {
         this.game = game;
 
         gamecam = new OrthographicCamera();
-        gamePort = new StretchViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT, gamecam);
+        gamePort = new StretchViewport(AembotPlatformer.V_WIDTH/AembotPlatformer.PPM,AembotPlatformer.V_HEIGHT/AembotPlatformer.PPM, gamecam);
         hud = new HUD(game.batch,0,0,0,this);
         
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 
-        world = new World(new Vector2(0,-25),true);
+        world = new World(new Vector2(0,-10),true);
         b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
@@ -60,11 +58,11 @@ public class PlayScreen implements Screen {
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX()+rect.getWidth()/2, rect.getY() + rect.getHeight()/2);
+            bdef.position.set((rect.getX()+rect.getWidth()/2) / AembotPlatformer.PPM, (rect.getY() + rect.getHeight()/2) / AembotPlatformer.PPM);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth()/2, rect.getHeight()/2);
+            shape.setAsBox(rect.getWidth()/2 / AembotPlatformer.PPM, rect.getHeight()/2 / AembotPlatformer.PPM);
 
             fdef.shape = shape;
 
@@ -85,20 +83,20 @@ public class PlayScreen implements Screen {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && aembot.body.getLinearVelocity().y == 0) aembot.moveY();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)  ) aembot.moveXLeft();;
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)  && aembot.body.getLinearVelocity().x >= -2) aembot.moveXLeft();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) ) aembot.moveXRight();;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && aembot.body.getLinearVelocity().x <= 2) aembot.moveXRight();
 
 
     }
 
     public void update(float dt) {
         handleInput(dt);
-        world.step(1/60f,5,2);
+        world.step(1/60f,6,2);
         gamecam.update();
         renderer.setView(gamecam);
 
-        gamecam.position.x = aembot.body.getPosition().x + 98;
+        gamecam.position.x = aembot.body.getPosition().x;
     }
 
     @Override

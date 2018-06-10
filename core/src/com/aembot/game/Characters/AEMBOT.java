@@ -1,5 +1,6 @@
 package com.aembot.game.Characters;
 
+import com.aembot.game.AembotPlatformer;
 import com.aembot.game.Screens.PlayScreen;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
@@ -27,7 +28,7 @@ public class AEMBOT extends Sprite {
 
 
         bodyDef = new BodyDef();
-        bodyDef.position.set(32,32);
+        bodyDef.position.set(32/ AembotPlatformer.PPM,32/AembotPlatformer.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
          body = world.createBody(bodyDef);
 
@@ -35,7 +36,7 @@ public class AEMBOT extends Sprite {
 
         fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(10);
+        shape.setRadius(5/AembotPlatformer.PPM);
         fixtureDef.shape = shape;
         fixtureDef.restitution = 0;
         body.createFixture(fixtureDef);
@@ -44,15 +45,15 @@ public class AEMBOT extends Sprite {
     }
 
     public void moveXRight(){
-        body.applyLinearImpulse(new Vector2(.75f,0),body.getWorldCenter(),true);
+        body.applyLinearImpulse(new Vector2(0.1f,0),body.getWorldCenter(),true);
     }
 
     public void moveXLeft(){
-        body.applyLinearImpulse(new Vector2(-.75f,0),body.getWorldCenter(),true);
+        body.applyLinearImpulse(new Vector2(-0.1f,0),body.getWorldCenter(),true);
     }
 
     public void moveY(){
-        body.applyLinearImpulse(new Vector2(0,50f),body.getWorldCenter(),true);
+        body.applyLinearImpulse(new Vector2(0,4f),body.getWorldCenter(),true);
 
     }
 
