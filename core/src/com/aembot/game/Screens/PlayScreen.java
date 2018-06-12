@@ -2,6 +2,7 @@ package com.aembot.game.Screens;
 
 import com.aembot.game.AembotPlatformer;
 import com.aembot.game.Characters.AEMBOT;
+import com.aembot.game.Characters.Robot;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -20,8 +21,15 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.w3c.dom.css.Rect;
+/**
+ * @author Goirick Saha
+ */
 
 public class PlayScreen implements Screen {
+
+    public static int score = 0;
+    public static int level = 01;
+    public static int ammo = 0;
 
     public static World world;
     private Box2DDebugRenderer b2dr;
@@ -31,9 +39,11 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private HUD hud;
+    //characters
     private AEMBOT aembot;
+    private Robot robot;
 
-    public static TmxMapLoader mapLoader = new TmxMapLoader();;
+    public static TmxMapLoader mapLoader = new TmxMapLoader();
     public static  TiledMap map = mapLoader.load("Strongholdmap1.tmx");
     public static OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(map, 1/AembotPlatformer.PPM);
 
@@ -41,9 +51,13 @@ public class PlayScreen implements Screen {
         this.game = game;
 
         gamecam = new OrthographicCamera();
+
+        gamePort = new StretchViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT, gamecam);
+        hud = new HUD(game.batch,score,level,ammo,this);
+
         gamePort = new StretchViewport(AembotPlatformer.V_WIDTH/AembotPlatformer.PPM,AembotPlatformer.V_HEIGHT/AembotPlatformer.PPM, gamecam);
         hud = new HUD(game.batch,0,0,0,this);
-        
+
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 
         world = new World(new Vector2(0,-10),true);
@@ -54,6 +68,7 @@ public class PlayScreen implements Screen {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+        //Defining ground object layer
         for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
 
@@ -68,7 +83,8 @@ public class PlayScreen implements Screen {
 
             body.createFixture(fdef);
         }
-
+        //defining position of robot enemy
+        robot = new Robot(this, .32f, .32f);
 
         aembot = new AEMBOT();
 
@@ -80,14 +96,11 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt){
-
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && aembot.body.getLinearVelocity().y == 0) aembot.moveY();
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)  && aembot.body.getLinearVelocity().x >= -2) aembot.moveXLeft();
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && aembot.body.getLinearVelocity().x <= 2) aembot.moveXRight();
-
-
     }
 
     public void update(float dt) {
@@ -96,7 +109,13 @@ public class PlayScreen implements Screen {
         gamecam.update();
         renderer.setView(gamecam);
 
+
+        score = (int) (aembot.body.getPosition().x - 32) / 10;
+        hud.update(score);
+        gamecam.position.x = aembot.body.getPosition().x + 98;
         gamecam.position.x = aembot.body.getPosition().x;
+
+        robot.update(dt);
     }
 
     @Override
@@ -112,9 +131,6 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-
-
-
     }
 
     @Override
@@ -149,4 +165,8 @@ public class PlayScreen implements Screen {
     public Camera getCam(){return gamecam;}
 
     public TiledMap getMap(){return map;}
+
+    public static World getWorld() {
+        return world;
+    }
 }

@@ -19,20 +19,13 @@ public class AEMBOT extends Sprite {
 
     private float playerX, playerY;
 
-
     public AEMBOT(){
-
-
-
         world = PlayScreen.world;
-
 
         bodyDef = new BodyDef();
         bodyDef.position.set(32/ AembotPlatformer.PPM,32/AembotPlatformer.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-         body = world.createBody(bodyDef);
-
-
+        body = world.createBody(bodyDef);
 
         fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
@@ -40,8 +33,6 @@ public class AEMBOT extends Sprite {
         fixtureDef.shape = shape;
         fixtureDef.restitution = 0;
         body.createFixture(fixtureDef);
-
-
     }
 
     public void moveXRight(){
