@@ -4,6 +4,7 @@ import com.aembot.game.AembotPlatformer;
 import com.aembot.game.Screens.PlayScreen;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -12,24 +13,19 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class AEMBOT extends Sprite {
 
-
     public static String PlayerID;
 
     private World world;
     private BodyDef bodyDef;
     public Body body;
     private FixtureDef fixtureDef;
-
+    private Rectangle bounds;
 
     private float playerX, playerY;
 
-
     public AEMBOT(){
-
-
-
+        //bounds.set(getX(), getY(), getWidth(), getHeight());
         world = PlayScreen.world;
-
 
         bodyDef = new BodyDef();
         bodyDef.position.set(32/ AembotPlatformer.PPM,32/AembotPlatformer.PPM);
@@ -62,9 +58,5 @@ public class AEMBOT extends Sprite {
         body.applyLinearImpulse(new Vector2(0,4f),body.getWorldCenter(),true);
 
     }
-
-
-
-
 
 }

@@ -55,11 +55,15 @@ public class Coins extends Sprite{
 
 
     public boolean isDed(){
-        return fixture.getUserData() == "Ded";
+        return (fixture.getUserData().equals("Ded"));
     }
 
     public void terminateCoin() {
         this.bodyDef.position.set(100,100);
+    }
+
+    public Body getBody(){
+        return body;
     }
 
 

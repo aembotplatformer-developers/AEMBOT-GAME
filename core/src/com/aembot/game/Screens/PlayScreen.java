@@ -1,8 +1,10 @@
 package com.aembot.game.Screens;
 
 import com.aembot.game.AembotPlatformer;
+import com.aembot.game.Bodies.Coin;
 import com.aembot.game.Bodies.Coins;
 import com.aembot.game.Characters.AEMBOT;
+import com.aembot.game.Characters.Robot;
 import com.aembot.game.Tools.ObjectCollisionHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,18 +23,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import javafx.stage.Stage;
 import org.w3c.dom.css.Rect;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
-
 
     public static final float PPM = 100;
     public static int score = 0;
     public static int level = 01;
     public static int ammo = 0;
-
 
     public static World world;
     private Box2DDebugRenderer b2dr;
@@ -43,9 +45,13 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private HUD hud;
     private AEMBOT aembot;
+    private Robot robot;
+    private Coin coin;
+
+    private com.badlogic.gdx.scenes.scene2d.Stage playStage;
 
     public static TmxMapLoader mapLoader = new TmxMapLoader();;
-    public static  TiledMap map = mapLoader.load("core/assets/Strongholdmap1.tmx");
+    public static  TiledMap map = mapLoader.load("Strongholdmap1.tmx");
     public static OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(map, 1/AembotPlatformer.PPM);
 
     private ArrayList<Coins> coins;
@@ -61,12 +67,12 @@ public class PlayScreen implements Screen {
         gamePort = new StretchViewport(AembotPlatformer.V_WIDTH/AembotPlatformer.PPM,AembotPlatformer.V_HEIGHT/AembotPlatformer.PPM, gamecam);
         hud = new HUD(game.batch,0,0,0,this);
 
-        
+        playStage = new com.badlogic.gdx.scenes.scene2d.Stage(new StretchViewport(AembotPlatformer.V_WIDTH, AembotPlatformer.V_HEIGHT, gamecam));
+
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 
         world = new World(new Vector2(0,-10),true);
         b2dr = new Box2DDebugRenderer();
-
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -90,15 +96,19 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-
-
         aembot = new AEMBOT();
+        //robot = new Robot(this, .32f, .32f);
+        coin = new Coin();
 
         coins = new ArrayList<Coins>();
 
         coins.add(new Coins(64/PPM,32/PPM));
 
         world.setContactListener(new ObjectCollisionHandler());
+    }
+
+    public static World getWorld() {
+        return world;
     }
 
     @Override
@@ -114,7 +124,6 @@ public class PlayScreen implements Screen {
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && aembot.body.getLinearVelocity().x <= 2) aembot.moveXRight();
 
-
     }
 
     public void update(float dt) {
@@ -127,10 +136,11 @@ public class PlayScreen implements Screen {
         hud.update(score);
         gamecam.position.x = aembot.body.getPosition().x + 102 / PPM;
 
-        for(Coins coin: coins){
-            if(coin.isDed()) coin.setPosition(100,100000000);
-        }
+        //robot.update(dt);
 
+        for(Coins coin: coins){
+            if(coin.isDed()) coin.getBody().applyLinearImpulse(new Vector2(0,4f),coin.getBody().getWorldCenter(),true);;
+        }
 
     }
 
@@ -147,9 +157,6 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-
-
-
     }
 
     @Override
@@ -181,7 +188,7 @@ public class PlayScreen implements Screen {
         score += addedScore;
     }
 
-
-
-
+    public void addObject(com.badlogic.gdx.scenes.scene2d.Stage playStage) {
+        playStage.addActor(coin);
+    }
 }
