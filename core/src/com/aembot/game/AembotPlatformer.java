@@ -7,7 +7,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+/**
+ * @author Goirick Saha
+ */
 public class AembotPlatformer extends Game {
 	public SpriteBatch batch;
 	public static final int V_WIDTH = 268;
@@ -21,7 +23,6 @@ public class AembotPlatformer extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new PlayScreen(this));
-
 	}
 
 	@Override

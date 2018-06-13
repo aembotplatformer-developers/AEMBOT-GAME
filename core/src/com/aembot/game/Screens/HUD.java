@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.awt.*;
 import java.awt.Label;
+/**
+ * Created by mikeo on 6/5/2018.
+ */
 
 public class HUD {
     private Viewport viewport;
@@ -27,33 +30,32 @@ public class HUD {
 
         this.score = score;
 
-    viewport = new FitViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT,new OrthographicCamera());
-    stage = new Stage(viewport,HudBatch);
+        viewport = new FitViewport(AembotPlatformer.V_WIDTH,AembotPlatformer.V_HEIGHT,new OrthographicCamera());
+        stage = new Stage(viewport,HudBatch);
 
-    levelL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%02d",level)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    scoreL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%06d",this.score)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    ammoL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%03d",ammo)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    levelTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Level")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    scoreTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Score")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    ammoTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Ammo")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%02d",level)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%06d",this.score)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        ammoL = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("%03d",ammo)), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Level")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Score")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        ammoTitle = new com.badlogic.gdx.scenes.scene2d.ui.Label((String.format("Ammo")), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-    Table table = new Table();
+        Table table = new Table();
 
-    table.setY(viewport.getScreenY() - 50);
+        table.setY(viewport.getScreenY() - 50);
 
-    table.setY(175);
-    table.setX(AembotPlatformer.V_WIDTH/2);
+        table.setY(175);
+        table.setX(AembotPlatformer.V_WIDTH/2);
 
-    table.add(levelTitle).pad(10);
-    table.add(scoreTitle).pad(10);
-    table.add(ammoTitle).pad(10);
-    table.row();
-    table.add(levelL).padTop(10);
-    table.add(scoreL).padTop(10);
-    table.add(ammoL).padTop(10);
+        table.add(levelTitle).pad(10);
+        table.add(scoreTitle).pad(10);
+        table.add(ammoTitle).pad(10);
+        table.row();
+        table.add(levelL).padTop(10);
+        table.add(scoreL).padTop(10);
+        table.add(ammoL).padTop(10);
 
-
-    stage.addActor(table);
+        stage.addActor(table);
     }
 
     public void update(int score){
