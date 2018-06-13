@@ -13,6 +13,9 @@ public class AembotPlatformer extends Game {
 	public static final int V_WIDTH = 268;
 	public static final int V_HEIGHT = 200;
 	public static final float PPM = 100;
+	public static final short CHARACTER_BIT = 3;
+	public static final short PLATFORM_BIT = 1;
+	public static final short PICKUP_BIT = 2;
 	
 	@Override
 	public void create () {

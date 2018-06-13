@@ -12,10 +12,14 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class AEMBOT extends Sprite {
 
+
+    public static String PlayerID;
+
     private World world;
     private BodyDef bodyDef;
     public Body body;
     private FixtureDef fixtureDef;
+
 
     private float playerX, playerY;
 
@@ -30,26 +34,28 @@ public class AEMBOT extends Sprite {
         bodyDef = new BodyDef();
         bodyDef.position.set(32/ AembotPlatformer.PPM,32/AembotPlatformer.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-         body = world.createBody(bodyDef);
-
+        body = world.createBody(bodyDef);
 
 
         fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(5/AembotPlatformer.PPM);
         fixtureDef.shape = shape;
-        fixtureDef.restitution = 0;
-        body.createFixture(fixtureDef);
 
+        fixtureDef.filter.categoryBits = AembotPlatformer.CHARACTER_BIT;
+        fixtureDef.restitution = 0;
+       // fixtureDef.filter.maskBits = AembotPlatformer.PLATFORM_BIT;
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData("Player");
 
     }
 
     public void moveXRight(){
-        body.applyLinearImpulse(new Vector2(0.1f,0),body.getWorldCenter(),true);
+        body.applyLinearImpulse(new Vector2(0.05f,0),body.getWorldCenter(),true);
     }
 
     public void moveXLeft(){
-        body.applyLinearImpulse(new Vector2(-0.1f,0),body.getWorldCenter(),true);
+        body.applyLinearImpulse(new Vector2(-0.05f,0),body.getWorldCenter(),true);
     }
 
     public void moveY(){
